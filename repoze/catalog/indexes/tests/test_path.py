@@ -1,3 +1,5 @@
+from builtins import range
+from builtins import object
 import unittest
 
 _marker = object()
@@ -20,7 +22,7 @@ class PathIndexTests(unittest.TestCase):
         if discriminator is _marker:
             discriminator = _discriminator
         index = self._getTargetClass()(discriminator)
-        for doc_id, path in values.items():
+        for doc_id, path in list(values.items()):
             index.index_doc(doc_id, path)
         return index
 
@@ -111,7 +113,7 @@ class PathIndexTests(unittest.TestCase):
 
     def test_index_doc_string_discrim(self):
         index = self._makeOne(discriminator='abc')
-        class Dummy:
+        class Dummy(object):
             abc = '/a/b/c'
         dummy = Dummy()
         index.index_doc(1, dummy)
@@ -123,7 +125,7 @@ class PathIndexTests(unittest.TestCase):
 
     def test_index_doc_string_discrim_tuple_value(self):
         index = self._makeOne(discriminator='abc')
-        class Dummy:
+        class Dummy(object):
             abc = ('', 'a', 'b', 'c')
         dummy = Dummy()
         index.index_doc(1, dummy)
@@ -135,7 +137,7 @@ class PathIndexTests(unittest.TestCase):
 
     def test_index_doc_string_discrim_list_value(self):
         index = self._makeOne(discriminator='abc')
-        class Dummy:
+        class Dummy(object):
             abc = ['', 'a', 'b', 'c']
         dummy = Dummy()
         index.index_doc(1, dummy)
@@ -147,7 +149,7 @@ class PathIndexTests(unittest.TestCase):
 
     def test_index_doc_missing_value_unindexes(self):
         index = self._makeOne(discriminator='abc')
-        class Dummy:
+        class Dummy(object):
             pass
         dummy = Dummy()
         dummy.abc = '/a/b/c'
@@ -162,7 +164,7 @@ class PathIndexTests(unittest.TestCase):
     def test_index_doc_persistent_value_raises(self):
         from persistent import Persistent
         index = self._makeOne(discriminator='abc')
-        class Dummy:
+        class Dummy(object):
             pass
         dummy = Dummy()
         dummy.abc = Persistent()
@@ -171,7 +173,7 @@ class PathIndexTests(unittest.TestCase):
     def test_unindex_doc(self):
         index = self._makeOne(VALUES)
 
-        for doc_id in VALUES.keys():
+        for doc_id in list(VALUES.keys()):
             index.unindex_doc(doc_id)
 
         self.assertEqual(index.numObjects(), 0)
@@ -197,28 +199,28 @@ class PathIndexTests(unittest.TestCase):
 
     def test_searches_against_root_plain_string(self):
         index = self._makeOne(VALUES)
-        expected = range(1,19)
+        expected = list(range(1,19))
 
         results = list(index.apply('/').keys())
         self.assertEqual(results, expected)
 
     def test_searches_against_root_tuple(self):
         index = self._makeOne(VALUES)
-        expected = range(1,19)
+        expected = list(range(1,19))
 
         results = list(index.apply(('',)).keys())
         self.assertEqual(results, expected)
 
     def test_searches_against_root_list(self):
         index = self._makeOne(VALUES)
-        expected = range(1,19)
+        expected = list(range(1,19))
 
         results = list(index.apply(['']).keys())
         self.assertEqual(results, expected)
 
     def test_searches_against_root_wo_level(self):
         index = self._makeOne(VALUES)
-        expected = range(1,19)
+        expected = list(range(1,19))
 
         results = list(index.apply({'query': '/'}).keys())
         self.assertEqual(results, expected)
@@ -227,7 +229,7 @@ class PathIndexTests(unittest.TestCase):
         index = self._makeOne(VALUES)
         comp = "/"
         level = 0
-        expected = range(1,19)
+        expected = list(range(1,19))
 
         results = list(index.apply({'query': '/', 'level': 0}).keys())
         self.assertEqual(results, expected)
@@ -489,14 +491,14 @@ class PathIndexTests(unittest.TestCase):
 
     def test_applyEq(self):
         index = self._makeOne(VALUES)
-        expected = range(1,19)
+        expected = list(range(1,19))
 
         results = list(index.applyEq('/').keys())
         self.assertEqual(results, expected)
 
     def test_applyNotEq(self):
         index = self._makeOne(VALUES)
-        expected = range(1,10)
+        expected = list(range(1,10))
 
         results = list(index.applyNotEq('/bb').keys())
         self.assertEqual(results, expected)
@@ -549,7 +551,7 @@ class FakeTreeSet(set):
         self.add(thing)
 
 
-class Dummy:
+class Dummy(object):
 
     def __init__( self, path):
         self.path = path

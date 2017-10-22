@@ -1,3 +1,5 @@
+from __future__ import division
+from past.utils import old_div
 import unittest
 
 _marker = object()
@@ -48,7 +50,7 @@ class TestCatalogKeywordIndex(unittest.TestCase):
     def test_reindex_doc_doesnt_unindex(self):
         index = self._makeOne()
         index.index_doc(5, [1])
-        index.unindex_doc = lambda *args, **kw: 1 / 0
+        index.unindex_doc = lambda *args, **kw: old_div(1, 0)
         index.reindex_doc(5, [1])
 
     def test_reindex_doc_same_values(self):

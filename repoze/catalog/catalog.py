@@ -1,3 +1,5 @@
+from past.builtins import basestring
+from builtins import object
 import BTrees
 from persistent.mapping import PersistentMapping
 import transaction
@@ -20,20 +22,20 @@ class Catalog(PersistentMapping):
 
     def clear(self):
         """ Clear all indexes in this catalog. """
-        for index in self.values():
+        for index in list(self.values()):
             index.clear()
 
     def index_doc(self, docid, obj):
         """Register the document represented by ``obj`` in indexes of
         this catalog using docid ``docid``."""
         assertint(docid)
-        for index in self.values():
+        for index in list(self.values()):
             index.index_doc(docid, obj)
 
     def unindex_doc(self, docid):
         """Unregister the document id from indexes of this catalog."""
         assertint(docid)
-        for index in self.values():
+        for index in list(self.values()):
             index.unindex_doc(docid)
 
     def reindex_doc(self, docid, obj):
@@ -42,7 +44,7 @@ class Catalog(PersistentMapping):
         ``unindex_doc``, then ``index_doc``, but specialized indexes
         can override the method that this API calls to do less work. """
         assertint(docid)
-        for index in self.values():
+        for index in list(self.values()):
             index.reindex_doc(docid, obj)
 
     def __setitem__(self, name, index):
@@ -86,7 +88,7 @@ class Catalog(PersistentMapping):
         if index_query_order is None:
             # unordered query (use apply)
             results = []
-            for index_name, index_query in query.items():
+            for index_name, index_query in list(query.items()):
                 index = self.get(index_name)
                 if index is None:
                     raise ValueError('No such index %s' % index_name)

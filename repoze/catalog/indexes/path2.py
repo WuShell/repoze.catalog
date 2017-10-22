@@ -1,3 +1,6 @@
+from builtins import str
+from builtins import range
+from past.builtins import basestring
 from zope.interface import implements
 
 import BTrees
@@ -59,7 +62,7 @@ class CatalogPathIndex2(CatalogIndex):  #pragma NO COVERAGE
     def __len__(self):
         return len(self.docid_to_path)
 
-    def __nonzero__(self):
+    def __bool__(self):
         return True
 
     def _getPathTuple(self, path):
@@ -188,7 +191,7 @@ class CatalogPathIndex2(CatalogIndex):  #pragma NO COVERAGE
             return False
 
     def _indexed(self):
-        return self.docid_to_path.keys()
+        return list(self.docid_to_path.keys())
 
     def search(self, path, depth=None, include_path=False, attr_checker=None):
         """ Provided a path string (e.g. ``/path/to/object``) or a
@@ -334,7 +337,7 @@ class CatalogPathIndex2(CatalogIndex):  #pragma NO COVERAGE
                         continue
                     stack.append((newpath, attrs[:]))
 
-        return attr_checker(result.values())
+        return attr_checker(list(result.values()))
 
     def apply_intersect(self, query, docids):
         """ Default apply_intersect implementation """
@@ -372,7 +375,7 @@ class CatalogPathIndex2(CatalogIndex):  #pragma NO COVERAGE
         return self.apply(query)
 
 def add_to_closest(sofar, thispath, theset):
-    paths = sorted(sofar.keys(), reverse=True)
+    paths = sorted(list(sofar.keys()), reverse=True)
     for path in paths:
         pathlen = len(path)
         if thispath[:pathlen] == path:
@@ -380,7 +383,7 @@ def add_to_closest(sofar, thispath, theset):
             break
 
 def remove_from_closest(sofar, thispath, docid):
-    paths = sorted(sofar.keys(), reverse=True)
+    paths = sorted(list(sofar.keys()), reverse=True)
     for path in paths:
         pathlen = len(path)
         if thispath[:pathlen] == path:

@@ -1,3 +1,7 @@
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import object
 import unittest
 from repoze.catalog.query import ast_support
 
@@ -59,7 +63,7 @@ class TestQuery(unittest.TestCase):
             def iter_children(self):
                 return self.children
 
-        from StringIO import StringIO
+        from io import StringIO
         a = Derived('A')
         b = Derived('B')
         c = Derived('C')

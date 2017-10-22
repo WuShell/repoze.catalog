@@ -1,3 +1,4 @@
+from past.builtins import basestring
 from zope.interface import implements
 
 from zope.index.interfaces import IIndexSort
@@ -37,7 +38,7 @@ class CatalogTextIndex(CatalogIndex, TextIndex):
         return self.index_doc(docid, object)
 
     def _indexed(self):
-        return self.index._docwords.keys()
+        return list(self.index._docwords.keys())
 
     def sort(self, result, reverse=False, limit=None, sort_type=None):
         """Sort by text relevance.
@@ -60,7 +61,7 @@ class CatalogTextIndex(CatalogIndex, TextIndex):
                 "result does not contain weights. To produce a weighted "
                 "result, include a text search in the query.")
 
-        items = [(weight, docid) for (docid, weight) in result.items()]
+        items = [(weight, docid) for (docid, weight) in list(result.items())]
         # when reverse is false, output largest weight first.
         # when reverse is true, output smallest weight first.
         items.sort(reverse=not reverse)

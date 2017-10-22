@@ -1,3 +1,6 @@
+from past.builtins import cmp
+from builtins import range
+from past.builtins import basestring
 from zope.interface import implements
 from persistent import Persistent
 
@@ -99,7 +102,7 @@ class CatalogPathIndex(CatalogIndex):
         if isinstance(path, (list, tuple)):
             path = '/'+ '/'.join(path[1:])
 
-        comps = filter(None, path.split('/'))
+        comps = [_f for _f in path.split('/') if _f]
 
         if docid not in self._unindex:
             self._length.change(1)
@@ -138,7 +141,7 @@ class CatalogPathIndex(CatalogIndex):
         del self._unindex[docid]
 
     def _indexed(self):
-        return self._unindex.keys()
+        return list(self._unindex.keys())
 
     def search(self, path, default_level=0):
         """
@@ -155,10 +158,10 @@ class CatalogPathIndex(CatalogIndex):
             level = int(path[1])
             path  = path[0]
 
-        comps = filter(None, path.split('/'))
+        comps = [_f for _f in path.split('/') if _f]
 
         if len(comps) == 0:
-            return self.family.IF.Set(self._unindex.keys())
+            return self.family.IF.Set(list(self._unindex.keys()))
 
         results = None
         if level >= 0:

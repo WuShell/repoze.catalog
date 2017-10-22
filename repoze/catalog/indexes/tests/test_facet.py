@@ -1,3 +1,4 @@
+from builtins import object
 import unittest
 
 FACETS = [
@@ -89,7 +90,7 @@ class TestCatalogFacetIndex(unittest.TestCase):
 
     def test_index_doc_string_discriminator(self):
         OTHER_FACETS = ['foo', 'foo:bar', 'foo:baz']
-        class Dummy:
+        class Dummy(object):
             facets = ['foo:bar']
         index = self._makeOne('facets', OTHER_FACETS)
         index.index_doc(1, Dummy())
@@ -99,7 +100,7 @@ class TestCatalogFacetIndex(unittest.TestCase):
 
     def test_index_doc_missing_value_unindexes(self):
         OTHER_FACETS = ['foo', 'foo:bar', 'foo:baz']
-        class Dummy:
+        class Dummy(object):
             pass
         dummy = Dummy()
         dummy.facets = ['foo:bar']
@@ -114,7 +115,7 @@ class TestCatalogFacetIndex(unittest.TestCase):
     def test_index_doc_persistent_value_raises(self):
         from persistent import Persistent
         OTHER_FACETS = ['foo', 'foo:bar', 'foo:baz']
-        class Dummy:
+        class Dummy(object):
             pass
         index = self._makeOne('facets', OTHER_FACETS)
         dummy = Dummy()
@@ -123,7 +124,7 @@ class TestCatalogFacetIndex(unittest.TestCase):
 
     def test_index_doc_unindexes_old_values(self):
         OTHER_FACETS = ['foo', 'foo:bar', 'foo:baz']
-        class Dummy:
+        class Dummy(object):
             pass
         dummy = Dummy()
         dummy.facets = ['foo:bar']

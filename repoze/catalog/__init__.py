@@ -1,5 +1,6 @@
 
-class RangeValue:
+from builtins import object
+class RangeValue(object):
     """ Use in fieldindex query above to indicate a range search for a term """
     def __init__(self, start, end):
         self.start = start

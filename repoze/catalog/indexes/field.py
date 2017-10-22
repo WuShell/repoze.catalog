@@ -1,3 +1,6 @@
+from __future__ import division
+from past.builtins import basestring
+from past.utils import old_div
 import bisect
 import heapq
 from itertools import islice
@@ -92,7 +95,7 @@ class CatalogFieldIndex(CatalogIndex, FieldIndex):
         self._num_docs.change(-1)
 
     def _indexed(self):
-        return self._rev_index.keys()
+        return list(self._rev_index.keys())
 
     def sort(self, docids, reverse=False, limit=None, sort_type=None):
         if not docids:
@@ -150,7 +153,7 @@ class CatalogFieldIndex(CatalogIndex, FieldIndex):
             # XXX this needs work.
             rlen = len(docids)
             if limit:
-                if (limit < 300) or (limit/float(rlen) > 0.09):
+                if (limit < 300) or (old_div(limit,float(rlen)) > 0.09):
                     sort_type = NBEST
                 else:
                     sort_type = TIMSORT
@@ -170,7 +173,7 @@ class CatalogFieldIndex(CatalogIndex, FieldIndex):
         fwd_index = self._fwd_index
 
         n = 0
-        for set in fwd_index.values():
+        for set in list(fwd_index.values()):
             for docid in set:
                 if docid in docids:
                     n+=1
@@ -322,37 +325,37 @@ def fwscan_wins(limit, rlen, numdocs):
     work, but accuracy at very small index sizes is not terribly
     important for the author.
     """
-    docratio = rlen / float(numdocs)
+    docratio = old_div(rlen, float(numdocs))
 
     if limit:
-        limitratio = limit / float(numdocs)
+        limitratio = old_div(limit, float(numdocs))
     else:
         limitratio = 1
 
     div = 65536.0
 
-    if docratio >= 16384/div:
+    if docratio >= old_div(16384,div):
         # forward scan tends to beat nbest or timsort reliably when
         # the rlen is greater than a quarter of the number of
         # documents in the index
         return True
 
-    if docratio >= 256/div:
+    if docratio >= old_div(256,div):
         # depending on the limit ratio, forward scan still has a
         # chance to win over nbest or timsort even if the rlen is
         # smaller than a quarter of the number of documents in the
         # index, beginning reliably at a docratio of 512/65536.0.  XXX
         # It'd be nice to figure out a more concise way to express
         # this.
-        if 512/div <= docratio < 1024/div and limitratio <= 4/div:
+        if old_div(512,div) <= docratio < old_div(1024,div) and limitratio <= old_div(4,div):
             return True
-        elif  1024/div <= docratio < 2048/div and limitratio <= 32/div:
+        elif  old_div(1024,div) <= docratio < old_div(2048,div) and limitratio <= old_div(32,div):
             return True
-        elif 2048/div <= docratio < 4096/div and limitratio <= 128/div:
+        elif old_div(2048,div) <= docratio < old_div(4096,div) and limitratio <= old_div(128,div):
             return True
-        elif 4096/div <= docratio < 8192/div and limitratio <= 512/div:
+        elif old_div(4096,div) <= docratio < old_div(8192,div) and limitratio <= old_div(512,div):
             return True
-        elif 8192/div <= docratio < 16384/div and limitratio <= 4096/div:
+        elif old_div(8192,div) <= docratio < old_div(16384,div) and limitratio <= old_div(4096,div):
             return True
 
     return False
@@ -369,24 +372,24 @@ def nbest_ascending_wins(limit, rlen, numdocs):
     if not limit:
         # n-best can't be used without a limit
         return False
-    limitratio = limit / float(numdocs)
+    limitratio = old_div(limit, float(numdocs))
 
     if numdocs <= 768:
         return True
 
-    docratio = rlen / float(numdocs)
+    docratio = old_div(rlen, float(numdocs))
     div = 65536.0
 
-    if docratio < 4096/div:
+    if docratio < old_div(4096,div):
         # nbest tends to win when the rlen is less than about 6% of the
         # numdocs
         return True
 
-    if docratio == 1 and limitratio <= 8192/div:
+    if docratio == 1 and limitratio <= old_div(8192,div):
         return True
-    elif 1 > docratio >= 32768/div and limitratio <= 4096/div:
+    elif 1 > docratio >= old_div(32768,div) and limitratio <= old_div(4096,div):
         return True
-    elif 32768/div > docratio >= 4096/div and limitratio <= 2048/div:
+    elif old_div(32768,div) > docratio >= old_div(4096,div) and limitratio <= old_div(2048,div):
         return True
 
     return False

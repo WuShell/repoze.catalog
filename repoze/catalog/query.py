@@ -1,4 +1,7 @@
 from __future__ import print_function
+from builtins import str
+from builtins import range
+from builtins import object
 import BTrees
 import sys
 
@@ -496,7 +499,7 @@ class Or(BoolOp):
                 query_lower.negate(), query_upper.negate())
             queries[i_upper] = None
 
-        for i in xrange(len(queries)):
+        for i in range(len(queries)):
             query = queries[i]
             if type(query) in (Lt, Le):
                 match = uppers.get(query.index_name)
@@ -514,7 +517,7 @@ class Or(BoolOp):
                 else:
                     uppers[query.index_name] = (i, query)
 
-        queries = filter(None, queries)
+        queries = [_f for _f in queries if _f]
         if len(queries) == 1:
             return queries[0]
 
@@ -559,7 +562,7 @@ class And(BoolOp):
             queries[i_lower] = InRange.fromGTLT(query_lower, query_upper)
             queries[i_upper] = None
 
-        for i in xrange(len(queries)):
+        for i in range(len(queries)):
             query = queries[i]
             if type(query) in (Gt, Ge):
                 match = uppers.get(query.index_name)
@@ -577,7 +580,7 @@ class And(BoolOp):
                 else:
                     uppers[query.index_name] = (i, query)
 
-        queries = filter(None, queries)
+        queries = [_f for _f in queries if _f]
         if len(queries) == 1:
             return queries[0]
 
@@ -743,7 +746,7 @@ class _AstParser(object):
 
     def process_List(self, node, children):
         l = list(children[:-1])
-        for i in xrange(len(l)):
+        for i in range(len(l)):
             if isinstance(l[i], ast.Name):
                 l[i] = self._value(l[i])
         return l

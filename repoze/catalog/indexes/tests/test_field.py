@@ -1,3 +1,6 @@
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 import unittest
 
 _marker = object()
@@ -56,7 +59,7 @@ class TestCatalogFieldIndex(unittest.TestCase):
     def test_reindex_doc_doesnt_unindex(self):
         index = self._makeOne()
         index.index_doc(5, 1)
-        index.unindex_doc = lambda *args, **kw: 1 / 0
+        index.unindex_doc = lambda *args, **kw: old_div(1, 0)
         index.reindex_doc(5, 1)
 
     def test_reindex_doc_w_existing_docid_same_value(self):
@@ -220,7 +223,7 @@ class TestCatalogFieldIndex(unittest.TestCase):
             index.index_doc(i, i)
             c1.insert(i)
         result = index.sort(c1, reverse=True, limit=301) # waaa
-        self.assertEqual(list(result), range(9999, 9698, -1))
+        self.assertEqual(list(result), list(range(9999, 9698, -1)))
 
     def test_sort_force_fwscan_no_limit(self):
         from BTrees.IFBTree import IFSet

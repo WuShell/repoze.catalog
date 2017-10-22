@@ -1,3 +1,4 @@
+from builtins import object
 import unittest
 
 _marker = object()
@@ -243,7 +244,7 @@ class TestCatalog(unittest.TestCase):
             3:Content('field3', ['keyword3', 'same'], 'text three',
                       '/path1/path2/path3'),
             }
-        for num, doc in map.items():
+        for num, doc in list(map.items()):
             catalog.index_doc(num, doc)
         num, result = catalog.search(field=('field1', 'field1'), **extra)
         self.assertEqual(num, 1)
@@ -376,11 +377,11 @@ class TestResultSetSize(unittest.TestCase):
         self.assertEqual(unpickled.total, 2)
         self.assertEqual(repr(unpickled), 'ResultSetSize(1, 2)')
 
-class DummyConnection:
+class DummyConnection(object):
     def close(self):
         self.closed = True
 
-class DummyTransaction:
+class DummyTransaction(object):
     def commit(self):
         self.committed = True
 

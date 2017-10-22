@@ -1,3 +1,4 @@
+from past.builtins import basestring
 from zope.interface import implements
 
 from zope.index.keyword import KeywordIndex
@@ -45,7 +46,7 @@ class CatalogKeywordIndex(CatalogIndex, KeywordIndex):
         return self.index_doc(docid, value)
 
     def _indexed(self):
-        return self._rev_index.keys()
+        return list(self._rev_index.keys())
 
     def applyAny(self, values):
         return self.apply({'query': values, 'operator': 'or'})

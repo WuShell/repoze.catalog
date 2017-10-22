@@ -1,3 +1,4 @@
+from past.builtins import basestring
 try:
     from hashlib import md5
 except: # pragma no cover

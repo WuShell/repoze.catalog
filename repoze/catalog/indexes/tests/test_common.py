@@ -1,3 +1,4 @@
+from builtins import object
 import unittest
 
 class TestCatalogIndex(unittest.TestCase):
@@ -76,7 +77,7 @@ class TestCatalogIndex(unittest.TestCase):
             pass
         index = Test('abc')
         index._docids = set()
-        class Dummy:
+        class Dummy(object):
             abc = 'abc'
         dummy = Dummy()
         self.assertEqual(index.index_doc(1, dummy), 'abc')
@@ -89,7 +90,7 @@ class TestCatalogIndex(unittest.TestCase):
             pass
         index = Test('abc')
         index._docids = set()
-        class Dummy:
+        class Dummy(object):
             pass
         dummy = Dummy()
         dummy.abc = 'abc'
@@ -107,7 +108,7 @@ class TestCatalogIndex(unittest.TestCase):
             pass
         index = Test('abc')
         index._docids = set()
-        class Dummy:
+        class Dummy(object):
             pass
         dummy = Dummy()
         self.assertEqual(index.index_doc(20, dummy), None)
@@ -122,7 +123,7 @@ class TestCatalogIndex(unittest.TestCase):
             pass
         index = Test('abc')
         index._docids = set()
-        class Dummy:
+        class Dummy(object):
             pass
         dummy = Dummy()
         self.assertEqual(index.index_doc(20, dummy), None)
@@ -136,7 +137,7 @@ class TestCatalogIndex(unittest.TestCase):
             pass
         index = Test('abc')
         index._docids = set()
-        class Dummy:
+        class Dummy(object):
             pass
         dummy = Dummy()
         self.assertEqual(index.index_doc(20, dummy), None)
@@ -151,7 +152,7 @@ class TestCatalogIndex(unittest.TestCase):
             pass
         index = Test('abc')
         index._docids = set()
-        class Dummy:
+        class Dummy(object):
             pass
         dummy = Dummy()
         dummy.abc = Persistent()
@@ -164,7 +165,7 @@ class TestCatalogIndex(unittest.TestCase):
             pass
         index = Test('abc')
         index._docids = set()
-        class Dummy:
+        class Dummy(object):
             pass
         dummy = Dummy()
         dummy.abc = Broken()
@@ -176,7 +177,7 @@ class TestCatalogIndex(unittest.TestCase):
             pass
         index = Test('abc')
         index._docids = set()
-        class Dummy:
+        class Dummy(object):
             abc = 'abc'
         dummy = Dummy()
         index.index_doc(1, dummy)

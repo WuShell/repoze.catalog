@@ -1,3 +1,5 @@
+from past.builtins import basestring
+from builtins import object
 from persistent import Persistent
 from ZODB.broken import Broken
 import BTrees

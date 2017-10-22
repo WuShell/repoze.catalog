@@ -1,3 +1,6 @@
+from __future__ import division
+from past.builtins import basestring
+from past.utils import old_div
 import unittest
 
 _marker = object()
@@ -52,7 +55,7 @@ class TestCatalogTextIndex(unittest.TestCase):
     def test_reindex_doc_doesnt_unindex(self):
         index = self._makeOne()
         index.index_doc(5, 'now is the time')
-        index.unindex_doc = lambda *args, **kw: 1/0
+        index.unindex_doc = lambda *args, **kw: old_div(1,0)
         index.reindex_doc(5, 'now is the time')
 
     def test_sort_no_results(self):

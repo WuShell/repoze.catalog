@@ -22,17 +22,17 @@ IF = BTrees.family32.IF
 
 
 def migrate_to_0_8_0_from_document_map(catalog, document_map):
-    migrate_to_0_8_0_from_docids(catalog, document_map.docid_to_address.keys())
+    migrate_to_0_8_0_from_docids(catalog, list(document_map.docid_to_address.keys()))
 
 
 def migrate_to_0_8_0(catalog):
     docids = IF.multiunion([IF.Set(index._indexed()) for index
-                            in catalog.values() if hasattr(index, '_indexed')])
+                            in list(catalog.values()) if hasattr(index, '_indexed')])
     migrate_to_0_8_0_from_docids(catalog, docids)
 
 
 def migrate_to_0_8_0_from_docids(catalog, docids):
-    for index in catalog.values():
+    for index in list(catalog.values()):
         migrate = getattr(index, '_migrate_to_0_8_0', None)
         if migrate is not None:
             migrate(docids)
