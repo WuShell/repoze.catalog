@@ -102,7 +102,8 @@ class Catalog(PersistentMapping):
             if not results:
                 return EMPTY_RESULT
 
-            results.sort() # order from smallest to largest
+            # order from smallest to largest
+            results = sorted(results, key=len)
             _, result = results.pop(0)
             for _, r in results:
                 _, result = self.family.IF.weightedIntersection(result, r)

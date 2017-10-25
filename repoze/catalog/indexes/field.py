@@ -227,6 +227,11 @@ class CatalogFieldIndex(CatalogIndex, FieldIndex):
             v = rev_index.get(k, marker)
             if v is marker:
                 _missing.append(k)
+                # We cannot return the value if it is the marker (an empty
+                # list) as that crashes sorting in python3. Whatever integer
+                # value will return it does not matter, as those results are
+                # filtered out later by looking for them in _missing
+                return k
             return v
 
         for docid in sorted(docids, key=get, reverse=reverse):
@@ -253,7 +258,9 @@ class CatalogFieldIndex(CatalogIndex, FieldIndex):
         if len(sets) == 1:
             result = sets[0]
         elif operator == 'and':
-            sets.sort()
+            # under python3 you can't use <,> with Btree's IFSet instances,
+            # so we have to adapt sorting of results a bit
+            sets = sorted(sets, key=len)
             for set in sets:
                 result = self.family.IF.intersection(set, result)
         else:
