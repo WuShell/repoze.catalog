@@ -807,6 +807,12 @@ class _AstParser(object):
         operator, query = children
         return operator(query)
 
+    def process_USub(self, node, children):
+        # Under python3, in an expresion like "a > -1", "-1" is parsed by the
+        # ast module as UnaryOp(USub, Num), instead of simply Num. Making our
+        # parser return this lambda makes the parsing work as expected
+        return lambda x: 0 - x
+
     def process_Compare(self, node, children):
         # Python allows arbitrary chaining of comparisons, ie:
         #   x == y == z != abc
