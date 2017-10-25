@@ -1,7 +1,7 @@
 from builtins import str
 from builtins import range
 from past.builtins import basestring
-from zope.interface import implements
+from zope.interface import implementer
 
 import BTrees
 
@@ -11,6 +11,7 @@ from repoze.catalog.indexes.common import CatalogIndex
 _marker = object()
 
 
+@implementer(ICatalogIndex)
 class CatalogPathIndex2(CatalogIndex):  #pragma NO COVERAGE
     """
     DEPRECATED
@@ -34,7 +35,6 @@ class CatalogPathIndex2(CatalogIndex):  #pragma NO COVERAGE
     Eq
 
     """
-    implements(ICatalogIndex)
     attr_discriminator = None # b/w compat
 
     family = BTrees.family32

@@ -5,7 +5,7 @@ import bisect
 import heapq
 from itertools import islice
 
-from zope.interface import implements
+from zope.interface import implementer
 
 from zope.index.field import FieldIndex
 
@@ -20,6 +20,7 @@ NBEST = 'nbest'
 TIMSORT = 'timsort'
 
 
+@implementer(ICatalogIndex)
 class CatalogFieldIndex(CatalogIndex, FieldIndex):
     """ Field indexing.
 
@@ -49,7 +50,6 @@ class CatalogFieldIndex(CatalogIndex, FieldIndex):
 
     - NotInRange
     """
-    implements(ICatalogIndex)
 
     def __init__(self, discriminator):
         if not callable(discriminator):

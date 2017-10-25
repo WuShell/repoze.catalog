@@ -5,13 +5,15 @@ except: # pragma no cover
     from md5 import new as md5
 
 from persistent import Persistent
-from zope.interface import implements
+from zope.interface import implementer
 
 from repoze.catalog.indexes.keyword import CatalogKeywordIndex
 from repoze.catalog.interfaces import ICatalogIndex
 
 _marker = ()
 
+
+@implementer(ICatalogIndex)
 class CatalogFacetIndex(CatalogKeywordIndex):
     """Facet index.
 
@@ -33,7 +35,6 @@ class CatalogFacetIndex(CatalogKeywordIndex):
 
     - NotAll
     """
-    implements(ICatalogIndex)
 
     def __init__(self, discriminator, facets, family=None):
         if not callable(discriminator):
