@@ -12,7 +12,7 @@
 #
 ##############################################################################
 
-__version__ = '0.8.3'
+__version__ = '0.8.4'
 
 import os
 
@@ -27,6 +27,7 @@ except IOError:
 
 INSTALL_REQUIRES = [
     'setuptools',
+    'future',
     'zope.component',
     'ZODB3',
     'zope.index >= 3.5.0',
@@ -40,13 +41,15 @@ setup(name='repoze.catalog',
       description='Searching and indexing based on zope.index',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[
-        "Intended Audience :: Developers",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.6",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: Implementation :: CPython",
-        "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+          "Intended Audience :: Developers",
+          "Programming Language :: Python",
+          "Programming Language :: Python :: 2",
+          "Programming Language :: Python :: 2.6",
+          "Programming Language :: Python :: 2.7",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.6",
+          "Programming Language :: Python :: Implementation :: CPython",
+          "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
         ],
       keywords='indexing catalog search',
       author="Agendaless Consulting",
